@@ -30,10 +30,13 @@ async function sendNotification(event) {
       }
     }
 
-    await webpush.sendNotification(
-      pushSubscription,
-      payload
-    )
+   const response = await webpush.sendNotification(
+  pushSubscription,
+  payload
+)
+
+console.log('📨 Push enviado!')
+console.log('Status do push:', response.statusCode)
   }
 }
 
