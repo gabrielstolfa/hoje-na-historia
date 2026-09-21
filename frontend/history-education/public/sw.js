@@ -6,16 +6,21 @@ self.addEventListener('push', (event) => {
       try {
         const data = event.data.json()
 
-        console.log('Dados recebidos:', data)
-
         await self.registration.showNotification(data.title, {
           body: data.body
         })
 
-        console.log('showNotification executado com sucesso!')
       } catch (error) {
         console.error('Erro na notificação:', error)
       }
     })()
+  )
+})
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close()
+
+  event.waitUntil(
+   self.clients.openWindow('https://hoje-na-historia.onrender.com')
   )
 })
