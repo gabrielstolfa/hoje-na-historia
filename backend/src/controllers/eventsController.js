@@ -45,18 +45,62 @@ module.exports = {
   }
 },
 
-    sendTesteNotification: async (req,res) => {
-        try{
+ // POST /notifications/test
+sendTesteNotification: async (req, res) => {
+    try {
+        const event = eventService()
 
-            await pushService()
-
-            res.status(200).json({
-                message:'Notificação enviada!'
-            })
-        } catch(error){
-            res.status(500).json({
-                message: error.message
+        if (!event) {
+            return res.status(404).json({
+                message: 'Nenhum evento encontrado para hoje!'
             })
         }
+
+        await pushService(event)
+
+        return res.status(200).json({
+            message: 'Notificação enviada!'
+        })
+
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        })
     }
+},
+
+    // POST /notifications/daily
+    sendDailyNotification: async (req, res) => {
+    try {
+
+        const secret = req.headers.authorization
+
+    if (secret !== `Bearer ${process.env.CRON_SECRET}`) {
+        return res.status(401).json({
+            message: 'Não autorizado!'
+        })
+}
+
+        const event = eventService()
+
+        if (!event) {
+            return res.status(404).json({
+                message: 'Nenhum evento encontrado para hoje!'
+            })
+        }
+
+        await pushService(event)
+
+        return res.status(200).json({
+            message: 'Notificação diária enviada!'
+        })
+
+    } catch (error) {
+        console.log(error)
+
+        return res.status(500).json({
+            message: 'Erro ao enviar notificação!'
+        })
+    }
+}
 }
