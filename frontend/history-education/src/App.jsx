@@ -14,7 +14,7 @@ export default function App() {
        async function getEvent() {
         try {
         setLoading(true)
-        const response = await fetch('http://localhost:3000/events')
+        const response = await fetch('https://hoje-na-historia-api.onrender.com/events')
 
         if (!response.ok) {
         throw new Error('Erro ao buscar evento')

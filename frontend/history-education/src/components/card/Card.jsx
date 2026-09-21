@@ -30,7 +30,7 @@ export default function Card({ prev, fullEvent }) {
 
       // 5. Envia a subscription para o backend
       const response = await fetch(
-        'http://localhost:3000/subscriptions',
+        'https://hoje-na-historia-api.onrender.com/subscriptions',
         {
           method: 'POST',
           headers: {
