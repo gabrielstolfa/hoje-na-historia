@@ -18,9 +18,11 @@ self.addEventListener('push', (event) => {
 })
 
 self.addEventListener('notificationclick', (event) => {
+  console.log('🖱️ NOTIFICAÇÃO CLICADA!')
+
   event.notification.close()
 
   event.waitUntil(
-   self.clients.openWindow('https://hoje-na-historia.onrender.com')
+    self.clients.openWindow('https://hoje-na-historia.onrender.com')
   )
 })
