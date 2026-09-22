@@ -1,16 +1,27 @@
 const events = require('../eventsData')
 
 function getEvent() {
-     const today = new Date().getDate()
-     const realMonth = new Date().getMonth()+1
+  const date = new Date()
 
-    const eventToSend = events.find((e)=> {
-            if(e.day === today && e.month === realMonth){
-                return e
-            }
-        })
+  const parts = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: 'numeric',
+    month: 'numeric'
+  }).formatToParts(date)
 
-    return eventToSend
+  const day = Number(
+    parts.find(part => part.type === 'day').value
+  )
+
+  const month = Number(
+    parts.find(part => part.type === 'month').value
+  )
+
+  const eventToSend = events.find((e) => {
+    return e.day === day && e.month === month
+  })
+
+  return eventToSend
 }
 
 module.exports = getEvent
