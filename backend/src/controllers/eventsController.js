@@ -69,7 +69,6 @@ sendTesteNotification: async (req, res) => {
     }
 },
 
-    // POST /notifications/daily
    sendDailyNotification: async (req, res) => {
     console.log('🔥 ENDPOINT DAILY FOI CHAMADO!')
 
@@ -77,14 +76,10 @@ sendTesteNotification: async (req, res) => {
         const secret = req.headers.authorization
 
         if (secret !== `Bearer ${process.env.CRON_SECRET}`) {
-            console.log('❌ CRON_SECRET inválido')
-
             return res.status(401).json({
                 message: 'Não autorizado!'
             })
         }
-
-        console.log('✅ CRON_SECRET correto')
 
         const event = eventService()
 
@@ -94,15 +89,11 @@ sendTesteNotification: async (req, res) => {
             })
         }
 
-        console.log('📚 Evento encontrado:', event.event.preview)
-
         await pushService(event)
 
         console.log('🔔 pushService terminou')
 
-        return res.status(200).json({
-            message: 'Notificação diária enviada!'
-        })
+        return res.status(204).end()
 
     } catch (error) {
         console.log('❌ ERRO DAILY:', error)
