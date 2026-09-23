@@ -21,23 +21,39 @@ async function sendNotification(event) {
   })
 
   for (const subscription of subscriptions) {
+  const pushSubscription = {
+    endpoint: subscription.endpoint,
 
-    const pushSubscription = {
-      endpoint: subscription.endpoint,
-      keys: {
-        p256dh: subscription.p256dh,
-        auth: subscription.auth
-      }
+    keys: {
+      p256dh: subscription.p256dh,
+      auth: subscription.auth
+    }
+  }
+
+  try {
+    const response = await webpush.sendNotification(
+      pushSubscription,
+      payload
+    )
+
+    console.log('📨 Push enviado!')
+    console.log('Status do push:', response.statusCode)
+
+  } catch (error) {
+
+    if (error.statusCode === 404 || error.statusCode === 410) {
+      console.log('🗑️ Subscription expirada. Removendo...')
+
+      await subscriptionService.deleteSubscription(
+        subscription.endpoint
+      )
+
+      continue
     }
 
-   const response = await webpush.sendNotification(
-  pushSubscription,
-  payload
-)
-
-console.log('📨 Push enviado!')
-console.log('Status do push:', response.statusCode)
+    console.log('❌ Erro ao enviar push:', error.message)
   }
+}
 }
 
 module.exports = sendNotification

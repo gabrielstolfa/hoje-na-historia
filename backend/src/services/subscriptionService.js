@@ -24,7 +24,15 @@ async function getSubscriptions() {
   return result.rows
 }
 
+async function deleteSubscription(endpoint) {
+  await pool.query(
+    'DELETE FROM subscriptions WHERE endpoint = $1',
+    [endpoint]
+  )
+}
+
 module.exports = {
   saveSubscription,
-  getSubscriptions
+  getSubscriptions,
+  deleteSubscription
 }
