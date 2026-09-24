@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function Card({ prev, fullEvent }) {
+export default function Card({ prev, fullEvent, loading }) {
 
   const [open, setOpen] = useState(false)
 
@@ -98,44 +98,55 @@ export default function Card({ prev, fullEvent }) {
         </h1>
 
         {/* Preview */}
-        <h2
-          className="
-            text-xl md:text-2xl
-            font-serif
-            leading-relaxed
-            text-stone-100
-            text-center
-          "
-        >
-          {prev}
-        </h2>
+
+
+
+              <h2
+        className="
+          text-xl md:text-2xl
+          font-serif
+          leading-relaxed
+          text-stone-100
+          text-center
+        "
+      >
+        {loading ? (
+          <span className="text-stone-400 animate-pulse">
+            Buscando o acontecimento de hoje...
+          </span>
+        ) : (
+          prev
+        )}
+      </h2>
 
         {/* Botão abrir história */}
-        <div className="flex justify-center mt-10">
-
-          <button
-            onClick={() => setOpen(!open)}
-            className="
-              border border-amber-700
-              text-amber-500
-              px-6 py-3
-              rounded-md
-              text-sm
-              tracking-wider
-              uppercase
-              cursor-pointer
-              transition-all
-              duration-300
-              hover:bg-amber-600
-              hover:text-stone-950
-              hover:shadow-[0_0_25px_rgba(217,119,6,0.25)]
-              hover:-translate-y-1
-            "
-          >
-            {open ? "Fechar história ↑" : "Conhecer a história →"}
-          </button>
-
-        </div>
+        
+        {!loading && (
+  <div className="flex justify-center mt-10">
+    <button
+      onClick={() => setOpen(!open)}
+      className="
+        border border-amber-700
+        text-amber-500
+        px-6 py-3
+        rounded-md
+        text-sm
+        tracking-wider
+        uppercase
+        cursor-pointer
+        transition-all
+        duration-300
+        hover:bg-amber-600
+        hover:text-stone-950
+        hover:shadow-[0_0_25px_rgba(217,119,6,0.25)]
+        hover:-translate-y-1
+      "
+    >
+      {open ? "Fechar história ↑" : "Conhecer a história →"}
+    </button>
+  </div>
+)}
+       
 
         {/* História completa */}
         <div

@@ -34,18 +34,11 @@ export default function App() {
     getEvent()
   }, [])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Carregando evento de hoje...</p>
-      </div>
-    )
-  }
-
   return (
     <Card
       prev={prev}
       fullEvent={fullEvent}
+      loading={loading}
     />
   )
 }
